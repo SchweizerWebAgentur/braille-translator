@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- font awesome from BootstrapCDN -->
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="/public/app.css" rel="stylesheet">
+<script src="public/dist/aws-sdk.js"></script>
+<script src="https://kit.fontawesome.com/896bdf22ec.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-135436158-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-135436158-2');
+</script>
+
+<style>
+* {
+  box-sizing: border-box;     
+  -webkit-box-sizing: border-box;
+}
+body {
+  font: 18px Arial;
+  height: 100%;
+  margin: 0%;  
+  margin-left: 10px;
+}
+
+
+/*the container must be positioned relative:*/
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+
+input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 18px;
+  margin-left: 10px;
+  margin-block-start: 0px;
+  color: black;
+}
+
+select {
+  border: 1px solid transparent;
+  margin-top: 20px; 
+  background-color: #f1f1f1;
+  padding: 10px;
+  border:  #f1f1f1;
+  font-size: 18px;
+  margin-left: 10px;
+  margin-block-start: 0px;
+  color: black;
+  width: 100%;
+  font-size: 18px;
+  font-style: normal;
+}
+textarea{
+  font-size: 16px;
+  font-style: normal;
+}
+
+input[type=text] {
+  background-color:rgb(245, 240, 230);
+  width: 100%;
+}
+
+input[type=submit] {
+  background-color: DodgerBlue;
+  color: #fff;
+  cursor: pointer;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  color: black;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 70%;
+  margin-top: -50px;
+  left: 0;
+  right: 0;
+  text-align: left;
+}
+
+.submit{
+  margin-block-start: 10px;
+}
+
+.secondsubmit{
+  display: none;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #e9e9e9; 
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+
+}
+
+.choicefirst {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+  margin-left: 15px;
+  text-align: center;
+  /* display:grid; */
+}
+
+.choicesecond {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+
+.choicethird {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+
+.sentimentfirst {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+  display: inline-block;
+}
+
+.container{
+  position: relative;
+  text-align: left;
+  width:  calc(100vw - 30px);      /* calc and viewport to the rescue */
+  height: calc(100vh - 20px);
+  font-size: 18px;
+  padding: 10px;
+  display: flex;
+  background-color: #fff;
+  /* border: 1px solid #bbb; /* sonra silinecek */
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.containertext{
+  margin-right: auto;
+  margin-top: 15px;
+  margin-left: 15px;
+  font-size: 18px;
+}
+
+.translatetextarea{
+  margin-right: auto;
+  margin-top: 15px;
+  margin-left: 15px;
+  font-size: 16px;
+  font-style: normal;
+  font-family:inherit;
+  color:rgb(72, 70, 70)
+}
+
+.buttonclass{
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: fit-content;
+  resize: both;
+  height: 50px;
+  font-size: 15px;
+  padding: 10px; 
+}
+
+.buttonclass:hover{
+  color: darkblue;
+  background-color:dodgerblue;
+}
+
+.spinoff{
+  padding: 15px;
+}
+
+.buttonclasstranslate{
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 13.5px;
+  width: fit-content;
+  resize: both;
+  height: 50px;
+  font-size: 15px;
+  padding: 10px; 
+}
+
+.buttonclasstranslate:hover{
+  color: darkblue;
+  background-color:dodgerblue;
+}
+
+
+
+.greetingsclass{
+margin-right: 25px;
+}
+
+.makeitgoodagain{
+  margin-top: 25px;
+  position: relative;
+  text-align: center;
+}
+
+.allcontainter{
+  display: inline-block;
+}
+
+.logout{
+  text-align: center;
+  align-self: center;
+}
+
+.pclass{
+  margin-left: 15px;
+}
+.header{
+  text-align: center;
+}
+.headersecond{
+  text-align: center;
+  font-size: 25px;
+}
+
+div { margin: 0px; }
+
+.styled-select {
+   
+   height: 29px;
+   overflow: hidden;
+   width: 300px;
+   margin-left: 10px;
+   font-size: 18px;
+}
+
+.styled-select select {
+   background: transparent;
+   border: none;
+   font-size: 14px;
+   height: 29px;
+   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   width: 320px;
+}
+
+.styled-select.slate {
+   background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;
+   height: 34px;
+   width: 260px;
+   margin-left: 50px;
+}
+
+.styled-select.slate select {
+   border: 1px solid #ccc;
+   font-size: 16px;
+   height: 34px;
+   width: 268px;
+}
+
+
+
+.custom-select {
+  position: relative;
+  font-family: Arial;
+  border-left: 10px solid dodgerblue;
+  text-align: left;
+  border-right: 0px;
+  width: 100%;
+  padding-right:0px;
+  size: 100%;
+  -ms-box-sizing:content-box;
+-moz-box-sizing:content-box;
+-webkit-box-sizing:content-box; 
+box-sizing:content-box;
+  /* display: inline-block; */
+  /* margin-bottom: 5px; */
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  background-color: rgb(245, 240, 230);
+
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: black transparent transparent transparent;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: black;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: rgb(245, 240, 230);
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.agami{
+          font-size: 31.4px;
+        }
+        .pclass {
+          font-size: 20px;
+          margin-top: 40px;
+          border-left: 8px solid dodgerblue;
+        }
+
+        .pclass:hover:after {
+  width:100%;
+  right: 0;
+}
+.pclass:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  right: 0;
+  /* position: absolute; */
+  background: #2F74D0;
+  transition: width 1s ease 0s, right 0.5s ease 0s;
+  width: 0;
+}
+
+.apclass {
+          font-size: 20px;
+          margin-top: 40px;
+          border-left: 8px solid dodgerblue;
+          float: center;
+          align-content: center;
+        }
+
+        .apclass:hover:after {
+  width:100%;
+  right: 0;
+}
+.apclass:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  right: 0;
+  /* position: absolute; */
+  background: #2F74D0;
+  transition: width 1s ease 0s, right 0.5s ease 0s;
+  width: 0;
+}
+
+        a {
+  color: black;
+  text-transform:uppercase;
+  text-decoration: none;
+  letter-spacing: .25em;
+  /* display: inline-block; */
+  padding: 15px;
+  position: relative;
+}
+a:hover:after {
+  width:100%;
+  right: 0;
+}
+a:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  right: 0;
+  color: white;
+  position: absolute;
+  background: #2F74D0;
+  transition: width 1s ease 0s, right 0.5s ease 0s;
+  width: 0;
+}
+
+        .bdpclass {
+          font-size: 20px;
+        }
+        
+
+        .videosstyle{
+          /* display:table-row-group; */
+          align-content: left;
+        }
+        .firstvideo{
+          float: left;
+          display: inline;
+          margin-left: 50px;
+          margin-right: 50px;
+          background:rgb(237, 155, 155)
+          border-width: 1px;
+          padding-right: 40%;
+          border-radius: 25px;
+          padding-bottom: 40%;
+padding-top: 20px; height: 0; overflow: hidden;
+        }
+
+        .firstvideo iframe,
+.firstvideo object,
+.firstvideo embed {
+position: absolute;
+width: 50%;
+height: 50%;
+}
+
+        .secondvideo{
+          float: right;
+          margin-left: 50px;
+          margin-right: 50px;
+          background:rgb(237, 155, 155)
+          border-width: 1px;
+          position: relative;
+          border-radius: 25px;
+        }
+
+        .thirdvideo{
+          float: center;
+          margin-left: 50px;
+          margin-right: 50px;
+          /* margin-right: 80px; */
+          position: relative;
+          margin-top: 500px;
+          margin-bottom: 100px;
+        }
+        .support{
+          float: right;
+          /* padding: 20px; */
+          margin-top: 20px;
+          margin-right: 20px;
+        }
+        .firstdiv{
+          background:whitesmoke;
+          border-color: azure;
+          padding: 10px;
+          border-left: 8px dodgerblue;
+          margin-left: 10px;
+
+        }
+
+        .firstdiv div:hover {
+          background-color:dodgerblue; }
+
+          .firstdiv-active {
+             background-color: DodgerBlue !important; 
+             color: #ffffff; 
+        
+}
+
+
+              .loginbutton {
+  color:white;
+  
+  background: rgb(0, 0, 255);
+  padding: 10px 10px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  float: right;
+  text-align: right;
+  margin-top: -200px;
+/* margin-left: calc(150vh); */
+  /* display:table-row-group; */
+
+
+}
+
+
+.loginbutt {
+  color:white;
+  
+  background: rgb(0, 0, 255);
+  padding: 10px 10px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  float: right;
+  text-align: right;
+  margin-bottom: -30px;
+/* margin-left: calc(150vh); */
+  /* display:table-row-group; */
+
+
+}
+
+.loginbutt:hover {
+  opacity: 0.8;
+  color: white;
+}
+
+.loginbutton:hover {
+  opacity: 0.8;
+  color: white;
+}
+.logoclass{
+  margin-top: 5px;
+  align-self: auto;
+
+
+}
+.foots{
+  margin-bottom: 5px;
+display: inline-block;
+padding: 60px;
+}
+.header {
+
+  /* text-align: left; */
+  margin-top: -10px;
+
+  color: white;
+  /* margin-left: 7.5px; */
+  /* margin-top: 5px; */
+  /* margin-right: 200px; */
+  /* display: flex; */
+
+  
+
+}
+img {
+
+  margin-left: 15px;
+  margin-top: -80px;
+  display: flex;
+}
+.support{
+          float: right;
+          /* padding: 20px; */
+          margin-bottom: 20px;
+          margin-right: 20px;
+        }
+
+        ul li {
+  /* background: #cce5ff; */
+  margin: 5px;
+  text-align: left;
+}
+
+ul {
+  /* background: white; */
+  padding: 20px;
+}
+
+</style>
+
+<title>Write a good response</title>
+
+</head>
+
+<body>
+
+
+
+    
+    <div class="header">
+        <div class="login-page clearfix">
+          <div class="login-box auth0-box before">
+            <img src="https://beratics.com/wp-content/uploads/2019/10/revuow.png" href="https://beratics.com/reviewresponse/pricing" target="_blank" align="left" alt="Beratics Logo" width="150" height="96.33" />
+          </div>
+         <br>
+            <!-- <p class="fontsize">Protect your online reputation with Beratics!</p> -->
+            <a id="qsLoginBtn" class="loginbutton" href="/login">Login or Sign Up <i class="fas fa-user-tie"></i> </a> <br> <br>
+            <!-- <a id="pricing" class="loginbutton" subject="Request a free quote for review response software" href="mailto:contact@beratics.com" target="_blank"> </i> Pricing for pro users <i class="fas fa-user-tie"></i></a> <br><br> -->
+            <a id="support" class="loginbutton" href="mailto:support@beratics.com"> Mail: support <i class="fas fa-envelope"></i></a> <br>
+
+        </div>
+    </div>
+    <h3 class="agami">Review Response Tool - respond professionally to your online hotel reviews! </h3>
+
+        <!-- <div class="login-page clearfix">
+            <div class="logged-in-box auth0-box logged-in">
+                <a id="BERATICS" class="btn btn-primary btn-lg btn-logout btn-block" href="https://beratics.com/" target="_blank">Beratics</a>
+        
+              </div>
+        </div> -->
+
+        <!-- <div class="submit  logout">
+                <a id="qsLogoutBtn" class="submit" href="/logout">Logout</a>
+        </div> -->
+<div>
+
+  <form autocomplete="off"  method="POST" name="submitform" id="bigform">
+    <div class="autocomplete choicefirst" style="width:300px;" >
+
+    <input id="firstinput" type="text" name="topicfirst" placeholder="First Topic" value="{{topicfirst}}">
+    <div class="custom-select">
+    <select id="firstsentiment" name="sentimentfirst" >
+
+        <option value="positive" {% if sentimentfirst == 'positive' %}selected{% endif %}>positive</option>
+        <option value="positive" {% if sentimentfirst == 'positive' %}selected{% endif %}>positive</option>
+        <option value="negative" {% if sentimentfirst == 'negative' %}selected{% endif %}>negative</option>
+        <option value="neutral" {% if sentimentfirst == 'neutral' %}selected{% endif %}>neutral</option>
+        <option value="mixed" {% if sentimentfirst == 'mixed' %}selected{% endif %}>mixed</option>
+        
+        <!-- {% for o in sentiments%}
+        <option value="{{o.name}}">{{o.name}}</option>
+
+        <!-- <option value="{{negative}}">{{o.negative}}</option>
+        <option value="{{neutral}}">{{o.neutral}}</option>
+        <option value="{{mixed}}">{{o.mixed}}</option> -->
+        <!-- {% endfor %} -->
+      
+      </select>
+    </div>
+      </div>
+    <!-- <input id="firstsentiment" type="text" name="sentimentfirst" placeholder="Sentiment for first topic" value="{{sentimentfirst}}" > -->
+    
+
+  <div class="autocomplete choicesecond" style="width:300px;">
+      <input id="secondinput" type="text" name="topicsecond" disabled="disabled" placeholder="Second Topic" >
+      <input id="secondsentiment" type="text" name="sentimentsecond" disabled="disabled" placeholder="Sentiment for second topic">
+    </div>
+   
+    <div class="autocomplete choicethird" style="width:300px;">
+        <input id="thirdinput" type="text" name="topicthird" disabled="disabled" placeholder="Third Topic">
+        <input id="thirdsentiment" type="text" name="sentimentthird" disabled="disabled" placeholder="Sentiment for third topic">
+      </div>
+
+  <input type="submit" class="submit" name="submitform" id="submitform" onclick="submittheform();">
+
+
+
+  <div class="containertext">
+    <!-- <form method="POST" name="pastedtexast" id="pastedreview">
+      <textarea class="containertext" id="pastedreviewtext" value="{{pastedtext}}" name="pastedreview" type="text" rows="18" cols="40">{{pastedreview}}</textarea> -->
+
+
+    <form name="responseform" id="responseform">
+
+      <textarea class="containertext" placeholder="A good response will appear here, but please read it before posting" name="respnse" id="respnse" rows="18" cols="40">{{prediction}}</textarea>
+      
+    </form>
+  </form>
+  
+
+</div>
+</form>
+<p>This is a trial version of the review response tool, please sign up to try the full version!</p>
+<br>
+
+
+
+<body>
+    <p>Subscribe only for 3 CHF/Month</p>
+  <div class="firstdiv">
+
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+      <input type="hidden" name="cmd" value="_s-xclick">
+      <input type="hidden" name="hosted_button_id" value="TALUX6SMES9X2">
+      <!-- <table>
+      <tr><td><input type="hidden" name="on0" value="Subscribe for 1 year">Subscribe for 1 year</td></tr><tr><td><input type="text" name="os0" maxlength="200"></td></tr>
+      </table> -->
+      <input type="image" src="https://www.paypalobjects.com/en_US/CH/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+      <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+      </form>
+    </body>
+    <br>
+   <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+    <a id="qsLoginBtn2" class="loginbutt" href="/login">Sign up to try for free for 7 days, no payment information necessary!<i class="fas fa-user-tie"></i> </a> <br> <br>
+
+  </div>
+    <br>
+    <br>
+<!-- <h2>How to use the above tool to respond to your online hotel reviews?</h2>
+<ul>
+    <li><b>How to respond to positive hotel reviews without comments? </b><br> Just click submit! </li>
+  <li><b>How to respond to negative hotel reviews without comments? </b><br> Just change the sentiment to negative and click submit! </li>
+  <li><b>How to respond to positive hotel reviews with comments? </b><br> Enter a topic and click submit! </li>
+  <li><b>How to respond to negative hotel reviews with comments? </b><br> Change the sentiment to negative, enter a topic and click submit! </li>
+</ul>
+</div>
+ 
+<div class="firstdiv">
+<h2>Why to respond to your online hotel reviews?</h2>
+<p>Let us first take a look at statistics to get a healthy picture of the connection between online reviews and customer choice:    </p>
+<ul>
+   <li> 94% of customers read reviews before choosing a hotel (e-tailing group). Firstly, customers look for a hotel with specific characteristics and prices. Secondly, they read reviews before deciding between competitors in a category. That is why reviews are the most decisive parameter for customers in choosing a stay in the relevant category. </li>
+   <li> “Travelers spend an enormous amount of time researching hotels online. On average, hotel consumers made twelve visits to the website of an Online Travel Agency (OTA), requested 7.5 pages per visit, and spent almost five minutes on each page before booking.” (Cornell University Research, April 2011)</li>
+   <li> 	An appropriate response to reviews from hotel management is more likely to make TripAdvisor users book (57%), improves the overall impression of the hotel in the eyes of the potential customers (84%) and makes a potential customer think or feel that the hotel cares about its services (78%). (PhoCusWright, September 2012)</li>
+
+  </ul>
+
+</div>
+
+<div class="firstdiv">
+  <h2> Common mistakes while responding to hotel reviews that are solved by our tool </h2>
+    <ul>	
+      <li>Incorrect usage of language and wrong grammar in 82% of all responses which disrupts the reputation and brand name of the hotel </li>
+      <li>	Wrong formulation of sentences and wrong sequence of sentiments in the formulation</li>
+    <li>Non-customized response or in other words a generic response to all reviews based on old fashioned templates. In the eyes of the customer, generic responses are a sign that the hotel does not give enough importance to feedbacks.</li>
+        <li>Insufficient coverage of topics that are brought into discussion by guests</li>
+            <li>	Writing responses to negative reviews as if they were positive</li>
+    <li>Non-usage of search-engine-optimized (SEO) language which lowers the ranking during a Google, Booking or Tripadvisor Search</li>
+  
+  </ul>
+ </div>
+
+<div class="firstdiv">
+   <h3> Beratics formulated a solution for your company to solve all the above-mentioned problems and respond to all kinds of reviews in 13 languages in a matter of seconds. The artificial intelligence-based Review Response Software of Beratics:</h3>
+     <ul>
+        <li> is fast, very fast. It takes typically 2 seconds to formulate a response </li>
+        <li>enables you to respond to reviews without comments</li>
+        <li> generates a customized response to all topics and sentiments including neutral and mixed sentiments thanks to natural language processing methods,</li>
+        <li> correct usage of 13 languages (Arabic, Chinese, Czech, English, French, German, Italian, Japanese, Portuguese, Russian, Spanish, Taiwanese, Turkish) and generated responses use correct grammar and are formulated just in the right way to persuade your potential customers</li>
+        <li> search-engine-optimized formulation of generated language</li>
+        <li>gives you responses in thousands of different formulations with the same meaning</li>
+        <li>is based on an artificial intelligence-based algorithm that allows us to generate better responses every day.</li>
+   </ul>
+</div>
+  <body>
+    <div class="videosstyle">
+      <h3 class="firstdiv">Here is how you can respond to 50 reviews in 10 minutes after a busy weekend! Even if your guests talk to you in 13 different languages!</h3>
+      <div class="firstvideo">
+            <p class="pclass">How to respond to positive ratings without comments?</p>
+            <p class="bdpclass">Just click on the submit button!</p>
+            <iframe width="500" height="315" src="https://www.youtube.com/embed/W85bNh79cfQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="firstvideo">
+            <p class="pclass">How to respond to negative ratings without comments?</p>
+            <p class="bdpclass">Change the first sentiment to negative and click on submit!</p>
+            <iframe width="500" height="315" src="https://www.youtube.com/embed/IJoyVYC5TGk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <!-- <iframe width="420" height="345" src="https://www.youtube.com/embed/tgbNymZ7vqY"> </iframe> -->
+          <!-- </div>
+    
+          <div class="firstvideo">
+            <p class="apclass">How to respond to positive and negative ratings with comments?</p>
+            <p class="bdpclass">Add the topics and the corresponding sentiments and click on submit!</p>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/DTLxu-d6Wvs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      </div>
+          </div>
+ 
+
+         
+          <footer> <img src="public/spinoff.jpg" class="spinoff" style="float: right; width:177px;height:133px;" alt="ETH Spin-Off Logo" href="https://ethz.ch/de/wirtschaft-gesellschaft/entrepreneurship/spin-offs.html" target="_blank" /> </footer>
+          <footer class="foots">NLP GmbH&Beratics is a Spin-off from ETH Zurich in the area of natural language processing.</footer>
+        </body> -->
+
+
+    <script type="text/javascript">
+
+        AWS.config.region = 'us-east-2'; // Region
+
+
+        var translate = new AWS.Translate({region: AWS.config.region});
+        var polly = new AWS.Polly();
+
+        function doTranslate() {
+            var inputText = document.getElementById('inputText').value;
+            if (!inputText) {
+                alert("Input text cannot be empty.");
+                exit();
+            }
+
+            // get the language codes
+            var sourceDropdown = document.getElementById("sourceLanguageCodeDropdown");
+            var sourceLanguageCode = sourceDropdown.options[sourceDropdown.selectedIndex].value;
+
+            var targetDropdown = document.getElementById("targetLanguageCodeDropdown");
+            var targetLanguageCode = targetDropdown.options[targetDropdown.selectedIndex].value;
+
+            var params = {
+                Text: inputText,
+                SourceLanguageCode: sourceLanguageCode,
+                TargetLanguageCode: targetLanguageCode
+            };
+
+            translate.translateText(params, function(err, data) {
+                if (err) {
+                    console.log(err, err.stack);
+                    alert("Error calling Beratics Translate. " + err.message);
+                    return;
+                }
+                if (data) {
+                    var outputTextArea = document.getElementById('outputText');
+                    outputTextArea.value = data.TranslatedText;
+                }
+            });
+        }
+
+        function doSynthesizeInput() {
+            var text = document.getElementById('inputText').value.trim();
+            if (!text) {
+                return;
+            }
+            var sourceLanguageCode = document.getElementById("sourceLanguageCodeDropdown").value;
+            doSynthesize(text, sourceLanguageCode);
+        }
+
+        function doSynthesizeOutput() {
+            var text = document.getElementById('outputText').value.trim();
+            if (!text) {
+                return;
+            }
+            var targetLanguageCode = document.getElementById("targetLanguageCodeDropdown").value;
+            doSynthesize(text, targetLanguageCode);
+        }
+
+        function doSynthesize(text, languageCode) {
+            var voiceId;
+            switch (languageCode) {
+                case "de":
+                    voiceId = "Marlene";
+                    break;
+                case "en":
+                    voiceId = "Joanna";
+                    break;
+                case "es":
+                    voiceId = "Penelope";
+                    break;
+                case "fr":
+                    voiceId = "Celine";
+                    break;
+                case "pt":
+                    voiceId = "Vitoria";
+                    break;
+                default:
+                    voiceId = null;
+                    break;
+            }
+            if (!voiceId) {
+                alert("Speech synthesis unsupported for language code: \"" + languageCode + "\"");
+                return;
+            }
+            var params = {
+                OutputFormat: "mp3", 
+                SampleRate: "8000", 
+                Text: text, 
+                TextType: "text", 
+                VoiceId: voiceId
+            };
+            polly.synthesizeSpeech(params, function(err, data) {
+                if (err) {
+                    console.log(err, err.stack); // an error occurred
+                    alert("Error calling Amazon Polly. " + err.message);
+                }
+                else {
+                    var uInt8Array = new Uint8Array(data.AudioStream);
+                    var arrayBuffer = uInt8Array.buffer;
+                    var blob = new Blob([arrayBuffer]);
+                    var url = URL.createObjectURL(blob);
+
+                    audioElement = new Audio([url]);
+                    audioElement.play();
+                }
+            });
+        }
+
+        function clearInputs() {
+            document.getElementById('inputText').value = "";
+            document.getElementById('outputText').value = "";
+            // document.getElementById("sourceLanguageCodeDropdown").value = "en";
+            // document.getElementById("targetLanguageCodeDropdown").value = "de";
+        }
+    </script>
+</body>
+  <script>
+
+var x, i, j, selElmnt, a, b, c;
+/* Look for any elements with the class "custom-select": */
+x = document.getElementsByClassName("custom-select");
+for (i = 0; i < x.length; i++) {
+  selElmnt = x[i].getElementsByTagName("select")[0];
+  /* For each element, create a new DIV that will act as the selected item: */
+  a = document.createElement("DIV");
+  a.setAttribute("class", "select-selected");
+  a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+  x[i].appendChild(a);
+  /* For each element, create a new DIV that will contain the option list: */
+  b = document.createElement("DIV");
+  b.setAttribute("class", "select-items select-hide");
+  for (j = 1; j < selElmnt.length; j++) {
+    /* For each option in the original select element,
+    create a new DIV that will act as an option item: */
+    c = document.createElement("DIV");
+    c.innerHTML = selElmnt.options[j].innerHTML;
+    c.addEventListener("click", function(e) {
+        /* When an item is clicked, update the original select box,
+        and the selected item: */
+        var y, i, k, s, h;
+        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+        h = this.parentNode.previousSibling;
+        for (i = 0; i < s.length; i++) {
+          if (s.options[i].innerHTML == this.innerHTML) {
+            s.selectedIndex = i;
+            h.innerHTML = this.innerHTML;
+            y = this.parentNode.getElementsByClassName("same-as-selected");
+            for (k = 0; k < y.length; k++) {
+              y[k].removeAttribute("class");
+            }
+            this.setAttribute("class", "same-as-selected");
+            break;
+          }
+        }
+        h.click();
+    });
+    b.appendChild(c);
+  }
+  x[i].appendChild(b);
+  a.addEventListener("click", function(e) {
+    /* When the select box is clicked, close any other select boxes,
+    and open/close the current select box: */
+    e.stopPropagation();
+    closeAllSelect(this);
+    this.nextSibling.classList.toggle("select-hide");
+    this.classList.toggle("select-arrow-active");
+  });
+}
+
+function closeAllSelect(elmnt) {
+  /* A function that will close all select boxes in the document,
+  except the current select box: */
+  var x, y, i, arrNo = [];
+  x = document.getElementsByClassName("select-items");
+  y = document.getElementsByClassName("select-selected");
+  for (i = 0; i < y.length; i++) {
+    if (elmnt == y[i]) {
+      arrNo.push(i)
+    } else {
+      y[i].classList.remove("select-arrow-active");
+    }
+  }
+  for (i = 0; i < x.length; i++) {
+    if (arrNo.indexOf(i)) {
+      x[i].classList.add("select-hide");
+    }
+  }
+}
+
+/* If the user clicks anywhere outside the select box,
+then close all select boxes: */
+document.addEventListener("click", closeAllSelect);
+
+// var input = document.getElementById("bigform");
+// input.addEventListener("keyup", function(event) {
+//   if (event.keyCode === 13) {
+//    event.preventDefault();
+//    document.getElementById("submitform").click();
+//   }
+// })
+
+document.getElementById('firstsentiment').onchange = function() {
+        localStorage.setItem('selectedtem', document.getElementById('firstsentiment').value);
+      };
+
+      if (localStorage.getItem('selectedtem')) {
+        document.getElementById('firstsentiment').options[localStorage.getItem('selectedtem')].selected = true;
+      }
+
+document.getElementById('firstinput').scrollIntoView()
+
+function dearguest() {
+  var buttontext = document.getElementById("dearguest").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value=buttontext+"\n\n"+newtext;
+  }
+
+function dearsir() {
+  var buttontext = document.getElementById("dearsir").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value=buttontext+"\n\n"+newtext;
+  }
+
+function dearmadam() {
+  var buttontext = document.getElementById("dearmadam").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value = buttontext+"\n\n"+newtext;
+  }
+
+  function dearfirstnamelastname() {
+  var buttontext = document.getElementById("dearfirstnamelastname").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value = buttontext+"\n\n"+newtext;
+  }
+
+
+function dearmrms() {
+  var buttontext = document.getElementById("dearmrms").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value =buttontext+"\n\n"+newtext;
+        }
+
+
+function dearmrandmrs() {
+  var buttontext = document.getElementById("dearmrandmrs").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value =buttontext+"\n\n"+newtext;
+        }
+
+function callaction() {
+  var buttontext = document.getElementById("callendings").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value =newtext+"\n\n"+"Should you require additional information, or wish to discuss this request further, please do not hesitate to contact me directly at [ENTER HERE YOUR TELEPHONE NUMBER]";
+}
+
+function mailaction() {
+  var buttontext = document.getElementById("dearsir").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value =newtext+"\n\n"+"Should you require additional information, or wish to discuss this request further, please do not hesitate to contact me directly at [ENTER HERE YOUR MAIL ADDRESS]";
+  }
+
+function bestregards() {
+  var buttontext = document.getElementById("bestregards").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value =newtext+"\n\n"+buttontext;
+        }
+        
+function sincerely() {
+  var buttontext = document.getElementById("sincerely").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value =newtext+"\n\n"+buttontext;
+        }
+
+function yourssincerely() {
+  var buttontext = document.getElementById("yourssincerely").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value =newtext+"\n\n"+buttontext;
+        }
+
+
+function faithfully() {
+  var buttontext = document.getElementById("faithfully").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value =newtext+"\n\n"+buttontext;
+        }
+
+function truly() {
+  var buttontext = document.getElementById("truly").value;
+  var newtext = document.getElementById("respnse").value;
+  document.getElementById("respnse").value =newtext+"\n\n"+buttontext;
+        }
+
+function callmadam () {
+  var newtext = document.responseform.respnse.value;
+  document.responseform.respnse.value =newtext+"\n\n"+"Should you require additional information, or wish to discuss this request further, please do not hesitate to contact me directly at [ENTER HERE YOUR TELEPHONE NUMBER]";
+}
+
+function mailmadam () {
+  var newtext = document.responseform.respnse.value;
+  document.responseform.respnse.value =newtext+"\n\n"+"Should you require additional information, or wish to discuss this request further, please do not hesitate to contact me directly at [ENTER HERE YOUR MAIL ADDRESS]";
+  }
+
+
+function autocomplete(inp, arr) {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+          b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function (e) {
+      closeAllLists(e.target);
+  });
+}
+var lookuptopics = ["room","staff","location","bathroom","cleanliness","minibar","junior suite","internet connection","helicopter service","shuttle","bus service","taxi service","bar","bicycle","pay TV","scooter","balcony","fitness center","towels","kitchen facilities","recreational areas","Wi-Fi","recreational activities","vending machines","facilities","pool","telephone","TV","curtains","blackout curtains","dogsitting service","family room","twin room","single room","double room","king suite","suite","sofa bed","king size bed","extra bed","apartment","beds","check-in","check-out","furnitures","houskeeping","housekeeping staff","housemaids","concierge","parking valet","valet","flatscreen TV","bathtub","shower","radio","iron","iron and ironing board", "toilets", "sauna","breakfast","basketball court","water park","tennis court","football field","amusement park", "dinner", "food", "sandwiches","service", "workers","spa","facilities","hotel","air conditioner","hairdryer","aircondition","safe box","desk and chair","garage","restaurant","shop","room amenities"];
+var sentiments=["positive","negative","mixed","neutral"];
+autocomplete(document.getElementById("firstinput"), lookuptopics);
+autocomplete(document.getElementById("secondinput"), lookuptopics);
+autocomplete(document.getElementById("thirdinput"), lookuptopics);
+autocomplete(document.getElementById("firstsentiment"), sentiments);
+autocomplete(document.getElementById("secondsentiment"), sentiments);
+autocomplete(document.getElementById("thirdsentiment"), sentiments);
+
+</script>
+
+
+
+</html>
