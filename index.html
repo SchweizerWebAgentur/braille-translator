@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-adsense-account" content="ca-pub-3482599885710264">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3482599885710264"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Mapping of language codes to their respective index files
+            const languageMap = {
+                "en": "index_en.html",
+                "de": "index_de.html",
+                "es": "index_es.html",
+                "ar": "index_ar.html",
+                "bn": "index_bn.html",
+                "zh": "index_zh.html",
+                "fr": "index_fr.html",
+                "he": "index_he.html",
+                "hi": "index_hi.html",
+                "ja": "index_ja.html",
+                "kur": "index_kur.html",
+                "pt": "index_pt.html",
+                "ru": "index_ru.html",
+            };
+
+            // Get the user's preferred language
+            const userLang = navigator.language || navigator.userLanguage;
+
+            // Extract the primary language code (e.g., "en" from "en-US")
+            const langCode = userLang.split('-')[0];
+
+            // Determine the corresponding index file, defaulting to English if not found
+            const redirectUrl = languageMap[langCode] || languageMap["en"];
+
+            // Redirect the user to the appropriate index file
+            window.location.href = redirectUrl;
+        });
+    </script>
+</head>
+
+</html>
